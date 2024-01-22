@@ -71,11 +71,13 @@ async fn main() -> color_eyre::Result<()> {
 
     for query in batch.queries {
         let started = Instant::now();
+        let mut rows_count = 0;
         println!("-- Query: {}", query.name);
         let df = ctx.sql(&query.sql).await?;
         let mut stream = df.execute_stream().await?;
         while let Some(record_batch) = stream.next().await {
             let record_batch = record_batch?;
+            rows_count += record_batch.num_rows();
             println!(
                 "{}",
                 record_batch_to_sql_inserts(
@@ -91,7 +93,7 @@ async fn main() -> color_eyre::Result<()> {
             );
         }
         println!(
-            "-- query {} executed in {}\n",
+            "-- query {} executed in {} - {rows_count} rows exported!\n",
             query.name,
             format_duration(started.elapsed())
         );
