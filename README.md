@@ -3,7 +3,7 @@
 Extract data from multiple parquet (or csv) files and
 output it as `INSERT INTO` sql statements.
 
-Take a YAML config file as input.
+Takes a YAML config file containing queries to execute against the dataset as input.
 
 ````YAML
 queries:
