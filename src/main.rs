@@ -1,6 +1,6 @@
 use std::{
     fs::{self, File},
-    time::Instant,
+    time::{Duration, Instant},
 };
 
 use clap::Parser;
@@ -95,16 +95,19 @@ async fn main() -> color_eyre::Result<()> {
                 )
             );
         }
+        // round duration to milliseconds
+        let duration = Duration::from_millis(started.elapsed().as_millis() as u64);
+
         println!(
             "-- query {} executed in {} - {rows_count} rows exported!\n",
             query.name,
-            format_duration(started.elapsed())
+            format_duration(duration)
         );
         if atty::isnt(atty::Stream::Stdout) {
             eprintln!(
                 "\nQuery {} executed in {} - {rows_count} rows exported!\n",
                 query.name,
-                format_duration(started.elapsed())
+                format_duration(duration)
             );
         }
     }
