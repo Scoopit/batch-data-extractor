@@ -74,7 +74,7 @@ async fn main() -> color_eyre::Result<()> {
         let mut rows_count = 0;
         println!("-- Query: {}", query.name);
         if atty::isnt(atty::Stream::Stdout) {
-            eprintln!("Executing query {}\n{}", query.name, query.sql);
+            eprintln!("====> Executing query {}\n{}", query.name, query.sql);
         }
         let df = ctx.sql(&query.sql).await?;
         let mut stream = df.execute_stream().await?;
