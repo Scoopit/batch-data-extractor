@@ -73,6 +73,9 @@ async fn main() -> color_eyre::Result<()> {
         let started = Instant::now();
         let mut rows_count = 0;
         println!("-- Query: {}", query.name);
+        if atty::isnt(atty::Stream::Stdout) {
+            eprintln!("Executing query {}\n{}", query.name, query.sql);
+        }
         let df = ctx.sql(&query.sql).await?;
         let mut stream = df.execute_stream().await?;
         while let Some(record_batch) = stream.next().await {
@@ -97,6 +100,13 @@ async fn main() -> color_eyre::Result<()> {
             query.name,
             format_duration(started.elapsed())
         );
+        if atty::isnt(atty::Stream::Stdout) {
+            eprintln!(
+                "Query {} executed in {} - {rows_count} rows exported!",
+                query.name,
+                format_duration(started.elapsed())
+            );
+        }
     }
 
     if opts.print_mysqldump_header_and_footer {

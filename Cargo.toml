@@ -16,3 +16,4 @@ parquet-to-mysql = { git = "https://github.com/Scoopit/parquet-to-mysql.git", br
 datafusion = "34"
 futures = "0.3"
 humantime = "2"
+atty = "0.2"
