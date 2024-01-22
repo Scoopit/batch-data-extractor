@@ -684,6 +684,7 @@ dependencies = [
  "color-eyre",
  "datafusion 34.0.0",
  "futures",
+ "humantime",
  "parquet-to-mysql",
  "serde",
  "serde_yaml",

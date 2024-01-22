@@ -1,9 +1,13 @@
-use std::fs::{self, File};
+use std::{
+    fs::{self, File},
+    time::Instant,
+};
 
 use clap::Parser;
 use color_eyre::eyre::{Context, ContextCompat};
 use datafusion::execution::context::{SessionConfig, SessionContext};
 use futures::StreamExt;
+use humantime::format_duration;
 use parquet_to_mysql::record_batch_to_sql_inserts;
 use serde::Deserialize;
 
@@ -66,6 +70,8 @@ async fn main() -> color_eyre::Result<()> {
     }
 
     for query in batch.queries {
+        let started = Instant::now();
+        println!("-- Query: {}", query.name);
         let df = ctx.sql(&query.sql).await?;
         let mut stream = df.execute_stream().await?;
         while let Some(record_batch) = stream.next().await {
@@ -84,6 +90,11 @@ async fn main() -> color_eyre::Result<()> {
                 )
             );
         }
+        println!(
+            "-- query {} executed in {}\n",
+            query.name,
+            format_duration(started.elapsed())
+        );
     }
 
     if opts.print_mysqldump_header_and_footer {
