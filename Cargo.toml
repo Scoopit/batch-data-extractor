@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 bdt = "0.17"
-tokio = { version = "^1", feature = ["macros", "rt-multi"] }
+tokio = { version = "^1", features = ["macros", "rt-multi-thread"] }
 clap = { version = "^4.4", features = ["derive"] }
 color-eyre = "0.6"
 serde = { version = "1", features = ["derive"] }
