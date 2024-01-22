@@ -19,6 +19,12 @@ queries:
       WHERE p.curatedby_lid=1
 ````
 
+## Installation
+
+````bash
+cargo install --git https://github.com/Scoopit/batch-data-extractor.git
+````
+
 ## Credits
 
 Some part of the code (utils.rs) have been brutally
